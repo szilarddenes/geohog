@@ -9,163 +9,110 @@ GeoHog is a dual-purpose platform for geoscientists combining:
 1. **Newsletter System**: A TLDR-style digest that provides concise, curated summaries of the latest research, industry news, and developments in earth sciences.
 2. **AI Research Assistant**: A subscription-based AI tool for deep geological research, report creation, data transformation, and visualization.
 
-## Architecture & Technical Specifications
+## Simplified Setup Guide
 
-### Technology Stack
+### Prerequisites
 
-- **Frontend**: React with Next.js (Static Site Generation where possible)
-- **Backend**: Firebase (Firestore, Cloud Functions, Authentication, Hosting)
-- **AI Provider**: OpenRouter API initially, with planned migration to custom models
-- **Email Delivery**: SendGrid (starting with free tier)
-- **Testing**: Jest for unit tests, Cypress for E2E testing
-- **CI/CD**: GitHub Actions with Firebase deployment
-- **Monitoring**: Firebase Performance Monitoring
+- Node.js (v16+)
+- npm or yarn
+- Firebase account
 
-### Project Structure Guidelines
+### Quick Start
 
-- Maximum 3 levels of nesting in directory structure
-- Reusable components in `src/components`
-- Utility functions in `src/utils`
-- API routes in `src/pages/api` (Next.js API routes)
-- Admin interface in `src/pages/admin`
+1. **Clone the repository**
 
-## Newsletter System Specifications
+```bash
+git clone https://github.com/szilarddenes/geohog.git
+cd geohog
+```
 
-### Content Collection Sources
+2. **Install dependencies**
 
-#### Hydrocarbon & Energy Focus
-- Oil & gas journals (AAPG, Oil and Gas Journal, Rigzone)
-- Energy intelligence platforms (SPGlobal, EnergyIntel)
-- Natural gas resources (NaturalGasIntel)
+```bash
+npm install
+```
 
-#### Mining Resources
-- Mining.com, Mining Journal, MiningWeekly
-- Resource World, Engineering & Mining Journal
+3. **Set up Firebase**
 
-#### Geopolitical & Regional Sources
-- Stratfor, Geopolitical Futures
-- Resource Governance Institute
-- Regional sources from Americas, Europe, Russia, Asia, Middle East
+- Create a new Firebase project at [firebase.google.com](https://firebase.google.com)
+- Enable Authentication, Firestore, and Storage
+- Create a `.env.local` file based on `.env.example`
+- Add your Firebase credentials to `.env.local`
 
-#### Academic & Research
-- Nature Earth, Science, AGU
-- USGS, NOAA, NASA Earth sciences
-- Society of Petroleum Engineers, Society of Exploration Geophysicists
+4. **Start development server**
 
-### Content Processing Rules
+```bash
+npm run dev
+```
 
-- Summarization limited to 100 words maximum
-- Technical accuracy and attribution preserved
-- Focus on research findings, methodology, applications, and conclusions
+5. **Run Firebase emulators (optional, for local development)**
 
-### Content Categorization
+```bash
+npm run firebase:emulate
+```
 
-- Maximum 3 categories per content item
-- Geographic tagging
-- Content type classification (academic, industry, government, educational)
+## Project Structure
 
-### Newsletter Assembly
+```
+/
+├── public/           # Static assets
+├── src/
+│   ├── components/   # Reusable UI components
+│   ├── context/      # React context providers
+│   ├── lib/          # Utility functions and Firebase config
+│   ├── pages/        # Next.js pages and API routes
+│   └── styles/       # Global styles
+└── scripts/         # Deployment and utility scripts
+```
 
-- High-impact research prioritized at the top
-- Industry developments in the middle
-- Events and conferences at the bottom
-- 10 items per digest with at least 1 item per category
-- Maximum 2 industry items
-- Mandatory "upcoming events" section
+## Key Features
 
-### Newsletter Format
+### Newsletter System
 
-- Each item includes: headline, summary paragraph, source link
-- Maximum 1 image per digest (prefer satellite imagery or data visualizations)
-- Earth-tone color scheme
-- Standard footer with unsubscribe option
+- Content curation from various geoscience sources
+- AI-powered summarization
+- Categorized content by subject area
+- Email delivery with tracking
+- Custom subscription preferences
 
-### Subscription Options
+### Admin Dashboard
 
-- Email field only required
-- Optional fields: specialization, professional role, geographic region
-- Default delivery: Weekly on Wednesdays at 09:00 UTC
-- Category filtering available
-- HTML and plain text format options
-- Weekly and daily frequency options
+- Subscriber management
+- Content management
+- Newsletter creation and scheduling
+- Performance metrics
 
-### Monetization Strategy
+## Development Commands
 
-- 1 sponsored content item per digest (middle placement)
-- Clear labeling of sponsored content
-- Maximum 3 job listings per digest (placed after main content)
-- Affiliate links only when relevant to category
-- Disclosure for all affiliate content
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run export       # Export static site
+npm run test         # Run tests
+```
 
-## AI Research Assistant Specifications
+## Deployment
 
-### Key Functions
+The project is configured for Firebase Hosting deployment via GitHub Actions:
 
-1. **Deep Research Reports**: Generate comprehensive analysis with proper academic citations
-2. **Data Visualization**: Create plots, charts, and cross-sections from geological data
-3. **Coordinate Transformation**: Convert between different coordinate systems and projections
-4. **Vector Graphics**: Generate technical diagrams and geological illustrations
-5. **Large Dataset Processing**: Handle and analyze massive geological datasets
+1. Set up GitHub repository secrets:
+   - `FIREBASE_SERVICE_ACCOUNT_GEOHOG`
 
-### Technical Requirements
+2. Deploy by pushing to the master branch or using the deploy script:
 
-- **API Integration**: OpenRouter initially, with potential for custom fine-tuned models
-- **Vector Database**: For geological information retrieval and citation
-- **Data Processing Pipeline**: For handling large datasets efficiently
-- **Authentication System**: For subscription management and API rate limiting
-- **Output Formats**: PDF, SVG, CSV, and specialized geoscience formats
+```bash
+./git-deploy.sh
+```
 
-## Implementation Phases
+## Contributing
 
-### Phase 1: MVP Launch (1-3 months)
-- Weekly newsletter with manually curated, AI-summarized content
-- Basic website with subscription form
-- 5-10 high-quality geoscience sources
-- Minimal infrastructure costs ($6-11/month)
+Contributions are welcome! Please follow these steps:
 
-### Phase 2: Growth Phase (3-6 months)
-- Increased source coverage and content volume
-- First monetization through affiliates and sponsored content
-- Improved AI processing for better summaries
-- Semi-weekly delivery option
-- Alpha version of AI research assistant for internal testing
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
-### Phase 3: Full Implementation (6-12 months)
-- Daily newsletter option (premium)
-- Complete automation of content pipeline
-- Multiple monetization channels
-- Community features
-- Public beta of AI research assistant
-- Subscription tiers for different access levels
+## License
 
-## Development Guidelines
-
-### Code Standards
-- Comprehensive test coverage (unit and E2E)
-- Clean, documented code with TypeScript
-- Atomic git commits with meaningful messages
-- Code reviews for all pull requests
-- Performance optimization for all user-facing features
-
-### Admin Interface
-- Content management dashboard
-- Subscriber analytics
-- Newsletter preview and scheduling
-- Monetization tracking
-- AI assistant usage metrics
-
-### Testing Strategy
-- Unit tests for all business logic
-- Integration tests for Firebase interactions
-- E2E tests for critical user journeys
-- Performance testing for AI operations
-- Security testing for authentication and data access
-
-## Important Notes
-
-- This project fills a market gap with no equivalent to TLDR.tech in the geoscience community
-- Focus on quality of content and accuracy of AI outputs
-- Balance between automation and expert curation
-- Testing is a priority to ensure reliable operation
-- Black and white design with elegant, futuristic, and serious aesthetic
-
+All rights reserved.
