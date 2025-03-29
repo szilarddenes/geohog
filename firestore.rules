@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Authenticated users can read their own data
+    match /users/{userId} {
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow read, update: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Newsletter subscribers collection
+    match /subscribers/{subscriberId} {
+      allow create: if true; // Anyone can subscribe
+      allow read, update, delete: if request.auth != null && 
+                                   (request.auth.uid == subscriberId || 
+                                    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+    
+    // Newsletter content collection - read by all, write by admins
+    match /newsletter-content/{contentId} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Published newsletters
+    match /newsletters/{newsletterId} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Admin access rules
+    match /{document=**} {
+      allow read, write: if request.auth != null && 
+                         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+  }
+}
